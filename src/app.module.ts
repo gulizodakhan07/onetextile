@@ -36,11 +36,14 @@ import { Receivable } from './modules/receivable/entities/receivable.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
-      port: +process.env.DB_PORT,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST || "localhost",
+      port: +process.env.DB_PORT || 5432,
+      username: process.env.DB_USERNAME || "postgres",
+      password: process.env.DB_PASSWORD || "gulzodakhan",
+      database: process.env.DB_NAME || "onetextiletest",
       autoLoadEntities: true,
+      retryAttempts: 5,
+      retryDelay: 3000,
       entities: [User,RawMaterial,DyHouse,Senttodyehouse,DyedYarn,Client,Payment,Invoice,InvoiceItem,Currency,ExchangeRate,Receivable],
       synchronize: true,
       // logging: true
