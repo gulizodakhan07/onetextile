@@ -41,6 +41,8 @@ import { Receivable } from './modules/receivable/entities/receivable.entity';
       username: process.env.DB_USERNAME || "postgres",
       password: process.env.DB_PASSWORD || "gulzodakhan",
       database: process.env.DB_NAME || "onetextiletest",
+
+      
       autoLoadEntities: true,
       retryAttempts: 5,
       retryDelay: 3000,
