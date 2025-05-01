@@ -11,13 +11,14 @@ import { DyHouse } from '../dy-house/entities/dy-house.entity';
 export class DyedYarnService {
   constructor(
     @InjectRepository(DyedYarn) private dyedYarnRepository: Repository<DyedYarn>,
-    @InjectRepository(DyedYarn) private rawMaterialsRepository: Repository<RawMaterial>,
+    @InjectRepository(RawMaterial) private rawMaterialsRepository: Repository<RawMaterial>,
     @InjectRepository(DyHouse) private dyeHouseRepository: Repository<DyHouse>
 
 
   ){}
   async create(createDyedYarnDto: CreateDyedYarnDto): Promise<DyedYarn  > {
-    const rawMaterial = await this.rawMaterialsRepository.findOne({where:{id: createDyedYarnDto.rawMaterialsId}})
+    const rawMaterial = await this.rawMaterialsRepository.findOne({ where: { id: createDyedYarnDto.rawMaterialsId } });
+    console.log("rawmaterial: ",rawMaterial)
     if(!rawMaterial){
       throw new NotFoundException(`RawMaterial ID with ${createDyedYarnDto.rawMaterialsId} not found`)
     }

@@ -1,8 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { InvoiceItemService } from './invoice-item.service';
 import { CreateInvoiceItemDto } from './dto/create-invoice-item.dto';
 import { UpdateInvoiceItemDto } from './dto/update-invoice-item.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorator/roles.decorator';
+import { UserRoles } from 'src/utils/user-role.enum';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
+import { CheckRoleGuard } from 'src/guard/check-role.guard';
 
 @ApiTags('Invoice Items')
 @Controller('invoice-item')
@@ -43,11 +47,17 @@ export class InvoiceItemController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
+  @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   update(@Param('id') id: string, @Body() updateInvoiceItemDto: UpdateInvoiceItemDto) {
     return this.invoiceItemService.update(+id, updateInvoiceItemDto);
   }
 
   @Delete(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
+  @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   remove(@Param('id') id: string) {
     return this.invoiceItemService.remove(+id);
   }

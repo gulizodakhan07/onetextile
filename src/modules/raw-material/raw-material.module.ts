@@ -4,10 +4,11 @@ import { RawMaterialController } from './raw-material.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RawMaterial } from './entities/raw-material.entity';
 import { Senttodyehouse } from '../senttodyehouse/entities/senttodyehouse.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [TypeOrmModule.forFeature([RawMaterial,Senttodyehouse])],
   controllers: [RawMaterialController],
-  providers: [RawMaterialService],
+  providers: [RawMaterialService,JwtService],
 })
 export class RawMaterialModule {}

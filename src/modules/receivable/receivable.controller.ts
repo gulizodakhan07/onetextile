@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { ReceivableService } from './receivable.service';
 import { CreateReceivableDto } from './dto/create-receivable.dto';
 import { UpdateReceivableDto } from './dto/update-receivable.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PaymentStatus } from '../invoice/entities/invoice.entity';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserRoles } from 'src/utils/user-role.enum';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('Receivable')
 @Controller('receivable')
@@ -14,9 +15,9 @@ export class ReceivableController {
   constructor(private readonly receivableService: ReceivableService) {}
 
   @Post()
-  
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: 'Firma kimlardan qarzi borligi haqidagi malumotlarni yaratish'})
   @ApiResponse({status:201,description:'success'})
   @ApiResponse({status:400,description:"Bad request: Validation error"})
@@ -52,8 +53,9 @@ export class ReceivableController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: 'Firma kimlardan qarzi borligi haqidagi malumotlarni tahrirlash'})
   @ApiResponse({status:200,description:'muvaffaqiyatli ozgartirildi'})
   @ApiResponse({status:400,description:"Bad request: Validation error"})
@@ -75,9 +77,9 @@ export class ReceivableController {
   }
 
   @Delete(':id')
-  
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: 'Firma kimlardan qarzi borligi haqidagi malumotlarni ochirish'})
   @ApiResponse({status:200,description:'muvaffaqiyatli ochirildi'})
   @ApiResponse({status:404,description:"Not Found"})

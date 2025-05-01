@@ -19,9 +19,8 @@ export class CreateRawMaterialDto {
     @IsString()
     batchNumber: string
 
-    @IsInt()
-    sentToDyeHouseId: number
-
+    // @IsInt()
+    // sentToDyeHouseId: number
 
 
 }

@@ -13,6 +13,7 @@ export class DyedYarnController {
   constructor(private readonly dyedYarnService: DyedYarnService) { }
 
   @Post()
+
   @ApiOperation({ summary: 'Bo\'yoqxonadan qaytgan tayyor ip haqidagi ma\'lumotlarni qoshish' })
   @ApiResponse({ status: 201, description: 'Bo\'yalgan ip muvaffaqiyatli qoshildi' })
   @ApiResponse({ status: 400, description: 'Bad Request: Validation error' })

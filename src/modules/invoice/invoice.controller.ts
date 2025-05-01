@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Invoice } from './entities/invoice.entity';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
 import { UserRoles } from 'src/utils/user-role.enum';
 import { Roles } from 'src/decorator/roles.decorator';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags("Invoice(Faktura)")
 @Controller('invoice')
@@ -14,8 +15,9 @@ export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) {}
 
   @Post()
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: "Yangi invoice(faktura) yaratish"})
   @ApiResponse({ status: 201, description: 'Invoice muvaffaqiyatli yaratildi.' })
   @ApiResponse({ status: 400, description: 'Xatolik: noto\'g\'ri ma\'lumot' })
@@ -46,8 +48,9 @@ export class InvoiceController {
   }
 
   @Get(':id')
+  @ApiBearerAuth()
   @Roles(UserRoles.ADMIN,UserRoles.OBSERVER,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({summary: "Yangi invoice(faktura) oish"})
   @ApiResponse({ status: 200, description: 'Invoice muvaffaqiyatli korildi.',type: Invoice })
   @ApiResponse({ status: 404, description: 'Invoice topilmadi.' })
@@ -56,8 +59,9 @@ export class InvoiceController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: "Yangi invoice(faktura) tahrirlash"})
   @ApiResponse({ status: 201, description: 'Invoice muvaffaqiyatli ozgartirildi.' })
   @ApiResponse({ status: 400, description: 'Bad request: Vaalidation error' })
@@ -79,8 +83,9 @@ export class InvoiceController {
   }
 
   @Delete(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: "Yangi invoice(faktura) ochirish"})
   @ApiResponse({ status: 200, description: 'Invoice muvaffaqiyatli ochirildi.' })
   @ApiResponse({ status: 404, description: 'Invoice topilmadi.' })

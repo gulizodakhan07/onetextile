@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { UserRoles } from 'src/utils/user-role.enum';
+import { Roles } from 'src/decorator/roles.decorator';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
+import { CheckRoleGuard } from 'src/guard/check-role.guard';
 
 @Controller('user')
 export class UserController {
@@ -26,6 +29,10 @@ export class UserController {
   }
 
   @Patch(':id')
+  
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
+  @Roles(UserRoles.ADMIN)
   @ApiOperation({ summary: 'Foydalanuvchini malumotlarini tahrirlash' })
   @ApiResponse({status:404,description: 'User topilmadi'})
   @ApiResponse({ status: 400,description: 'Bad Request: Noto‘g‘ri ma’lumotlar kiritildi'})
@@ -46,6 +53,10 @@ export class UserController {
   }
 
   @Delete(':id')
+  
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
+  @Roles(UserRoles.ADMIN)
   @ApiOperation({ summary: 'Userni o\'chirish' })
   @ApiResponse({ status: 400,description: 'Bad Request: Noto\'g\'ri ma\'lumotlar kiritildi'})
   @ApiResponse({ status: 200,description: 'User malumotlari muvaffaqiyatli ozgartirildi'})

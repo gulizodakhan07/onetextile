@@ -2,10 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { SenttodyehouseService } from './senttodyehouse.service';
 import { CreateSenttodyehouseDto } from './dto/create-senttodyehouse.dto';
 import { UpdateSenttodyehouseDto } from './dto/update-senttodyehouse.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserRoles } from 'src/utils/user-role.enum';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('Sent to dye house')
 @Controller('senttodyehouse')
@@ -13,9 +14,6 @@ export class SenttodyehouseController {
   constructor(private readonly senttodyehouseService: SenttodyehouseService) {}
 
   @Post()
-  
-  @Roles(UserRoles.ADMIN,UserRoles.OBSERVER)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: 'Mahsulotni boyoq zavodiga yuborish'})
   @ApiResponse({status: 201,description: 'Mahsulot muvaffaqiyatli boyoq zavodiga yuborildi!'})
   @ApiResponse({status: 400,description: 'BAd Request: Validation failed'})
@@ -55,8 +53,9 @@ export class SenttodyehouseController {
   }
 
   @Patch(':id')
-  @Roles(UserRoles.ADMIN,UserRoles.OBSERVER)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
+  @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @ApiOperation({summary: 'Yuborilgan mahsulotlarni tahrirlash'})
   @ApiResponse({status: 200,description: 'Yuborilgan mahsulotlar muvaffaqiyatli ozgartirildi'})
   @ApiResponse({status:404,description: 'Yuborilgan mahsulot topilmadi'})
@@ -79,9 +78,9 @@ export class SenttodyehouseController {
   }
 
   @Delete(':id')
-  
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN)
-  @UseGuards(CheckRoleGuard)
   @ApiResponse({status: 200,description: 'Muvaffaqiyatli ochirildi'})
   @ApiResponse({status:404,description: 'Yuborilgan mahsulot topilmadi'})
   remove(@Param('id') id: string) {

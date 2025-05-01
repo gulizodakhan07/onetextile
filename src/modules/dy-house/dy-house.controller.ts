@@ -2,10 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { DyHouseService } from './dy-house.service';
 import { CreateDyHouseDto } from './dto/create-dy-house.dto';
 import { UpdateDyHouseDto } from './dto/update-dy-house.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
 import { Roles } from 'src/decorator/roles.decorator';
 import { UserRoles } from 'src/utils/user-role.enum';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('DyeHouse')
 @Controller('dye-house')
@@ -13,8 +14,9 @@ export class DyHouseController {
   constructor(private readonly dyHouseService: DyHouseService) {}
 
   @Post()
+  @ApiBearerAuth()
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Yangi bo‘yoq zavodi qo‘shish' })
   @ApiResponse({ status: 201, description: 'Bo‘yoq zavodi yaratildi' })
   @ApiResponse({ status: 400, description: 'Bad Request: Validation xatoligi' })

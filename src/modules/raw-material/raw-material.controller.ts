@@ -17,10 +17,12 @@ import {
   ApiResponse,
   ApiBody,
   ApiParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Roles } from 'src/decorator/roles.decorator';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
 import { UserRoles } from 'src/utils/user-role.enum';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('Raw Material') 
 @Controller('raw-material')
@@ -28,8 +30,9 @@ export class RawMaterialController {
   constructor(private readonly rawMaterialService: RawMaterialService) { }
 
   @Post()
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Yangi xomashyo qo‘shish' })
   @ApiResponse({ status: 201, description: 'Xomashyo yaratildi' })
   @ApiResponse({ status: 400, description: 'Bad Request: Validation failed' })
@@ -67,8 +70,9 @@ export class RawMaterialController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Xomashyoni yangilash' })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({
@@ -95,8 +99,9 @@ export class RawMaterialController {
   }
 
   @Delete(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Xomashyoni o‘chirish' })
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({ status: 200, description: 'Xomashyo o‘chirildi' })

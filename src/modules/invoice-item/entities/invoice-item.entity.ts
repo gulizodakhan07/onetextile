@@ -8,7 +8,7 @@ export class InvoiceItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Invoice, (invoice) => invoice.invoiceItemsId, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Invoice, (invoice) => invoice.invoiceItemsId, { onDelete: 'CASCADE',nullable: true })
   @JoinColumn({ name: 'invoiceId' })
   invoiceId: Invoice;
 

@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { InvoiceItem } from './entities/invoice-item.entity';
 import { DyedYarn } from '../dyed-yarn/entities/dyed-yarn.entity';
 import { Invoice } from '../invoice/entities/invoice.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports:[TypeOrmModule.forFeature([InvoiceItem,DyedYarn,Invoice])],
   controllers: [InvoiceItemController],
-  providers: [InvoiceItemService],
+  providers: [InvoiceItemService,JwtService],
 })
 export class InvoiceItemModule {}

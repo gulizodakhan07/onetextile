@@ -1,5 +1,5 @@
 // src/modules/auth/auth.controller.ts
-import { Controller, Post, Body, UnauthorizedException, Headers, BadRequestException, Query, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UnauthorizedException, Headers, BadRequestException, Query, UseGuards, Get, Req } from '@nestjs/common';
 import { Request } from "express"
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,6 +8,7 @@ import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiQuery, ApiResponse,
 import { UserRoles } from 'src/utils/user-role.enum';
 import { Roles } from 'src/decorator/roles.decorator';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('auth')
 @Controller({ version: '1', path: 'auth' })
@@ -15,6 +16,14 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
   ) { }
+
+  // @ApiBearerAuth()
+  // @UseGuards(CheckAuthGuard)
+  // @Get('profile')
+  // getProfile(@Req() req) {
+  //   return req.user;
+  // }
+
 
   @Post('signup')
   @ApiOperation({ summary: 'Foydalanuvchini ro‘yxatdan o‘tkazish' })
@@ -96,30 +105,30 @@ export class AuthController {
   }
 
   @Post('refresh-token')
-@ApiOperation({ summary: 'Refresh access token (enter only refresh token)' })
-@ApiResponse({
-  status: 200,
-  description: 'Successfully refreshed',
-})
-@ApiResponse({
-  status: 401,
-  description: 'Unauthorized token or invalid',
-})
-@ApiQuery({
-  name: 'token',
-  description: 'Refresh access token',
-  required: true,
-  type: String,
-})
-async refresh(@Query('token') token: string) {
-  console.log('Refreshed token:', token);
-  
-  if (!token) {
-    throw new UnauthorizedException('Refresh token is missing in query parameter');
-  }
+  @ApiOperation({ summary: 'Refresh access token (enter only refresh token)' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully refreshed',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized token or invalid',
+  })
+  @ApiQuery({
+    name: 'token',
+    description: 'Refresh access token',
+    required: true,
+    type: String,
+  })
+  async refresh(@Query('token') token: string) {
+    console.log('Refreshed token:', token);
 
-  return this.authService.refreshToken(token);
-}
+    if (!token) {
+      throw new UnauthorizedException('Refresh token is missing in query parameter');
+    }
+
+    return this.authService.refreshToken(token);
+  }
 
 
   @Post('logout')
@@ -142,7 +151,7 @@ async refresh(@Query('token') token: string) {
     if (!token) {
       throw new UnauthorizedException('Token is missing in query parameter');
     }
-  
+
     // Tokenni tekshirib, logout qiling
     return this.authService.logout(token);
   }

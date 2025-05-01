@@ -2,10 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorator/roles.decorator';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
 import { UserRoles } from 'src/utils/user-role.enum';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('Client')
 @Controller('client')
@@ -13,9 +14,9 @@ export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
   @Post()
-  
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({summary: 'Mijozlar haqidagi malumotlarni yaratish'})
   @ApiResponse({status: 201,description: 'Mijoz muvaffaqiyatli yaratildi'})
   @ApiResponse({status: 400,description: 'Bad Request: Validation error!'})
@@ -45,7 +46,6 @@ export class ClientController {
   }
 
   @Get(':id')
-  
   @ApiOperation({summary: 'Faqat bitta mijoz haqidagi malumotlarni olish'})
   @ApiResponse({status: 200,description: 'Mijoz muvaffaqiyatli korildi'})
   @ApiResponse({status: 404,description: 'Mijoz topilmadi'})
@@ -54,6 +54,7 @@ export class ClientController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: 'Mijozlar haqidagi malumotlarni tahrirlash'})
@@ -79,6 +80,7 @@ export class ClientController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN)
   @UseGuards(CheckRoleGuard)
   @ApiOperation({summary: 'Faqat bitta mijoz haqidagi malumotlarni ochirish'})

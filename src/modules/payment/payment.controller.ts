@@ -2,11 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PaymentMethodStatus } from 'src/utils/paymentMethod.enum';
 import { UserRoles } from 'src/utils/user-role.enum';
 import { Roles } from 'src/decorator/roles.decorator';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags("Payment")
 @Controller('payment')
@@ -14,8 +15,9 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) { }
 
   @Post()
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Mijozlardan qilingan to\'lovlar haqidagi ma\'lumotlarni yaratish' })
   @ApiResponse({ status: 201, description: 'Tolovlar muvaffaqiyatli yaratildi' })
   @ApiResponse({ status: 400, description: 'Bad request: Validation error' })
@@ -36,8 +38,6 @@ export class PaymentController {
   }
 
   @Get()
-  @Roles(UserRoles.ADMIN,UserRoles.OBSERVER,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Mijozlardan qilingan to\'lovlar haqidagi ma\'lumotlarni olish' })
   @ApiResponse({ status: 200, description: 'Tolovlar muvaffaqiyatli korildi' })
   findAll() {
@@ -53,8 +53,9 @@ export class PaymentController {
   }
 
   @Patch(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Mijozlardan qilingan to\'lovlar haqidagi ma\'lumotlarni tahrirlash' })
   @ApiResponse({ status: 200, description: 'Tolovlar muvaffaqiyatli ozgartirildi' })
   @ApiResponse({ status: 400, description: 'Bad request: Validation error' })
@@ -75,8 +76,9 @@ export class PaymentController {
   }
 
   @Delete(':id')
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
+  @ApiBearerAuth() 
   @Roles(UserRoles.ADMIN)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Mijozlardan qilingan to\'lov haqidagi ma\'lumotlarni ochirish' })
   @ApiResponse({ status: 200, description: 'Tolov muvaffaqiyatli ochirildi' })
   @ApiResponse({ status: 404, description: 'Tolov topilmadi' })

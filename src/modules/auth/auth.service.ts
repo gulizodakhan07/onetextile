@@ -14,6 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { RedisService } from 'src/client/redis.service';
 import { UserRoles } from 'src/utils/user-role.enum';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -21,12 +22,14 @@ export class AuthService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwt: JwtService,
     private readonly redisService: RedisService,
+    private readonly configService:ConfigService
   ) {}
 
   async signUp(payload: CreateUserDto) {
     const existingUser = await this.userRepository.findOne({
       where: { email: payload.email },
     });
+    // BOT TOKEN from env
 
     if (existingUser) {
       throw new ConflictException('Bunday email mavjud');
@@ -68,14 +71,15 @@ export class AuthService {
     const payload = { id: user.id, role: user.role };
 
     const accessToken = await this.jwt.signAsync(payload, {
-      secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: process.env.JWT_ACCESS_TIME,
+      secret: this.configService.get('JWT_ACCESS_SECRET'),
+      expiresIn: this.configService.get('JWT_ACCESS_TIME'),
     });
-
+    
     const refreshToken = await this.jwt.signAsync(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: process.env.JWT_REFRESH_TIME,
+      secret: this.configService.get('JWT_REFRESH_SECRET'),
+      expiresIn: this.configService.get('JWT_REFRESH_TIME'),
     });
+    
 
     await this.redisService.setValue(
       `refresh_token_user_${user.id}`,

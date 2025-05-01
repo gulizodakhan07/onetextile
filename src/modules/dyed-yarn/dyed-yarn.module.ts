@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DyedYarn } from './entities/dyed-yarn.entity';
 import { RawMaterial } from '../raw-material/entities/raw-material.entity';
 import { DyHouse } from '../dy-house/entities/dy-house.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DyedYarn,RawMaterial,DyHouse])],
   controllers: [DyedYarnController],
-  providers: [DyedYarnService],
+  providers: [DyedYarnService,JwtService],
 })
 export class DyedYarnModule {}

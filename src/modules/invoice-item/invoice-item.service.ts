@@ -29,9 +29,9 @@ export class InvoiceItemService {
     }
   
     const invoice = await this.invoiceRepository.findOne({ where: { id: invoiceId } }); 
-    if (!invoice) {
-      throw new Error('Invoice not found');
-    }
+    // if (!invoice) {
+    //   throw new Error('Invoice not found');
+    // }
   
     const totalPrice = quantity * unitPrice;
   
