@@ -47,8 +47,8 @@ export class InvoiceItemController {
   }
 
   @Patch(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   update(@Param('id') id: string, @Body() updateInvoiceItemDto: UpdateInvoiceItemDto) {
     return this.invoiceItemService.update(+id, updateInvoiceItemDto);

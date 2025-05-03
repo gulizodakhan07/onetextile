@@ -31,7 +31,7 @@ export class DyedYarn {
     @Column({type: 'boolean',name: 'isactive',default: true})
     isActive: boolean
 
-    @ManyToOne(() => RawMaterial)
+    @ManyToOne(() => RawMaterial,{onDelete: 'CASCADE'})
     rawMaterials: RawMaterial;
     
     @ManyToOne(() => DyHouse,{onDelete: 'CASCADE'})

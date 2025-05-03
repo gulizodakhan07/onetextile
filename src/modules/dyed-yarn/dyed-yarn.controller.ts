@@ -2,10 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { DyedYarnService } from './dyed-yarn.service';
 import { CreateDyedYarnDto } from './dto/create-dyed-yarn.dto';
 import { UpdateDyedYarnDto } from './dto/update-dyed-yarn.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserRoles } from 'src/utils/user-role.enum';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
 import { Roles } from 'src/decorator/roles.decorator';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
 @ApiTags('Dyed Yarn')
 @Controller('dyed-yarn')
@@ -84,8 +85,9 @@ export class DyedYarnController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   @Roles(UserRoles.ADMIN)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Bo\'yoqxonadan qaytgan tayyor ip haqidagi ma\'lumotlarni ochirish' })
   @ApiResponse({ status: 200, description: 'Bo\'yalgan ip muvaffaqiyatli ochirildi' })
   @ApiResponse({ status: 404, description: 'Bo\'yoqxonadan qaytgan tayyor ip topilmadi!' })

@@ -18,22 +18,22 @@ export class DyHouseService {
   }
 
   async findOne(id: number) {
-    const dyeHouse = await this.dyeHouseRepository.createQueryBuilder('DyeHouse')
-    .leftJoinAndSelect('DyeHouse.sentToDyeHouse', 'SentToDyeHouse')
-    .leftJoinAndSelect('DyeHouse.dyedYarn', 'dyedYarn')
+    const dyeHouse = await this.dyeHouseRepository.createQueryBuilder('Dyehouse')
+    .leftJoinAndSelect('Dyehouse.sentToDyeHouse', 'SentToDyeHouse')
+    .leftJoinAndSelect('Dyehouse.dyedYarn', 'dyedYarn')
     .select([
-      'DyeHouse.id','DyeHouse.name','DyeHouse.contactPerson','DyeHouse.phoneNumber',
-      'DyeHouse.adress','DyeHouse.createdAt','DyeHouse.updatedAt',
+      'Dyehouse.id','Dyehouse.name','Dyehouse.contactPerson','Dyehouse.phoneNumber',
+      'Dyehouse.adress','Dyehouse.createdAt','Dyehouse.updatedAt',
 
 
       'SentToDyeHouse.id','SentToDyeHouse.quantity','SentToDyeHouse.notes',
 
       'dyedYarn.id','dyedYarn.yarnNumber','dyedYarn.packageQuantity'
     ])
-    .where('DyeHouse.id = :id', { id }) 
+    .where('Dyehouse.id = :id', { id }) 
     .getOne()
     if(!dyeHouse){
-      throw new NotFoundException(`DyeHouse with ID  ${id} not found`)
+      throw new NotFoundException(`Dyehouse with ID  ${id} not found`)
 
     }
     return dyeHouse

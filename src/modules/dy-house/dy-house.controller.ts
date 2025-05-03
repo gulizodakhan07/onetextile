@@ -37,8 +37,6 @@ export class DyHouseController {
   }
 
   @Get()
-  @Roles(UserRoles.ADMIN,UserRoles.OBSERVER,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'Barcha bo‘yoq zavodlarini olish' })
   @ApiResponse({ status: 200, description: 'Bo‘yoq zavodlari ro‘yxati' })
   findAll() {
@@ -46,8 +44,6 @@ export class DyHouseController {
   }
 
   @Get(':id')
-  @Roles(UserRoles.ADMIN,UserRoles.OBSERVER,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
   @ApiOperation({ summary: 'ID bo‘yicha bitta bo‘yoq zavodini olish' })
   @ApiResponse({ status: 200, description: 'Topilgan bo‘yoq zavodi' })
   @ApiResponse({ status: 404, description: 'Bo‘yoq zavodi topilmadi' })
@@ -56,8 +52,9 @@ export class DyHouseController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Bo‘yoq zavodini yangilash' })
   @ApiResponse({ status: 200, description: 'Bo‘yoq zavodi yangilandi' })
   @ApiResponse({ status: 400, description: 'Bad Request: Validation xatoligi' })
@@ -78,6 +75,10 @@ export class DyHouseController {
   }
 
   @Delete(':id')
+  
+  @ApiBearerAuth()
+  @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Bo‘yoq zavodini o‘chirish' })
   @ApiResponse({ status: 200, description: 'Bo‘yoq zavodi muvaffaqiyatli o‘chirildi' })
   @ApiResponse({ status: 404, description: 'O‘chirilayotgan zavod topilmadi' })

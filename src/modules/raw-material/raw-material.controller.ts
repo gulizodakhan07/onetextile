@@ -70,8 +70,8 @@ export class RawMaterialController {
   }
 
   @Patch(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @ApiOperation({ summary: 'Xomashyoni yangilash' })
   @ApiParam({ name: 'id', type: Number })
@@ -99,8 +99,8 @@ export class RawMaterialController {
   }
 
   @Delete(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN)
   @ApiOperation({ summary: 'Xomashyoni o‘chirish' })
   @ApiParam({ name: 'id', type: Number })

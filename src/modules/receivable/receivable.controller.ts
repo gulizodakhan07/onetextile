@@ -15,8 +15,8 @@ export class ReceivableController {
   constructor(private readonly receivableService: ReceivableService) {}
 
   @Post()
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @ApiOperation({summary: 'Firma kimlardan qarzi borligi haqidagi malumotlarni yaratish'})
   @ApiResponse({status:201,description:'success'})
@@ -53,8 +53,8 @@ export class ReceivableController {
   }
 
   @Patch(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @ApiOperation({summary: 'Firma kimlardan qarzi borligi haqidagi malumotlarni tahrirlash'})
   @ApiResponse({status:200,description:'muvaffaqiyatli ozgartirildi'})
@@ -77,8 +77,8 @@ export class ReceivableController {
   }
 
   @Delete(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @ApiOperation({summary: 'Firma kimlardan qarzi borligi haqidagi malumotlarni ochirish'})
   @ApiResponse({status:200,description:'muvaffaqiyatli ochirildi'})

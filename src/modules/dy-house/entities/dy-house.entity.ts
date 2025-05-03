@@ -2,7 +2,7 @@ import { DyedYarn } from "src/modules/dyed-yarn/entities/dyed-yarn.entity";
 import { Senttodyehouse } from "src/modules/senttodyehouse/entities/senttodyehouse.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({name: 'dyeHouse'})
+@Entity({name: 'dyehouse'})
 export class DyHouse {
     @PrimaryGeneratedColumn()
     id: number

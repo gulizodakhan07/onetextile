@@ -53,8 +53,8 @@ export class SenttodyehouseController {
   }
 
   @Patch(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
   @ApiOperation({summary: 'Yuborilgan mahsulotlarni tahrirlash'})
   @ApiResponse({status: 200,description: 'Yuborilgan mahsulotlar muvaffaqiyatli ozgartirildi'})
@@ -78,8 +78,8 @@ export class SenttodyehouseController {
   }
 
   @Delete(':id')
-  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiBearerAuth() 
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN)
   @ApiResponse({status: 200,description: 'Muvaffaqiyatli ochirildi'})
   @ApiResponse({status:404,description: 'Yuborilgan mahsulot topilmadi'})

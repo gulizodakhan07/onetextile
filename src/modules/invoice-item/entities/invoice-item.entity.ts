@@ -12,7 +12,7 @@ export class InvoiceItem {
   @JoinColumn({ name: 'invoiceId' })
   invoiceId: Invoice;
 
-  @ManyToOne(() => DyedYarn, { eager: true })
+  @ManyToOne(() => DyedYarn, {onDelete: 'CASCADE',cascade:true, eager: true })
   @JoinColumn({ name: 'dyedYarnId' })
   dyedYarnId: DyedYarn;
 

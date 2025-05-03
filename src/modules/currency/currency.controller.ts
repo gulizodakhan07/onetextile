@@ -1,22 +1,23 @@
 import { Controller, Get, Post, Body, Param, Put, UseGuards } from '@nestjs/common';
 import { CurrencyService } from './currency.service';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 import { Currency, CurrencyType } from './entities/currency.entity';
 import { ExchangeRate } from '../exchange-rate/entities/exchange-rate.entity';
 import { UserRoles } from 'src/utils/user-role.enum';
 import { Roles } from 'src/decorator/roles.decorator';
 import { CheckRoleGuard } from 'src/guard/check-role.guard';
+import { CheckAuthGuard } from 'src/guard/check-auth.guard';
 
-@ApiTags('Currency') // API guruhini yaratamiz
+@ApiTags('Currency') 
 @Controller('currency')
 export class CurrencyController {
   constructor(private readonly currencyService: CurrencyService) { }
 
   @Post()
-  
+  @ApiBearerAuth()
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Create a new currency entry' })
   @ApiBody({
     schema: {
@@ -25,7 +26,7 @@ export class CurrencyController {
         currentRate: { type: "int", example: 1 }
       }
     }
-  }) // Swagger uchun body qismi
+  }) 
   @ApiResponse({ status: 201, description: 'Currency successfully created' })
   @ApiResponse({ status: 400, description: 'Bad Request:Validation error' })
   async create(@Body() createDto: CreateCurrencyDto): Promise<Currency> {
@@ -40,6 +41,9 @@ export class CurrencyController {
   }
 
   @Put(':id')
+  @ApiBearerAuth()
+  @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({ summary: 'Update currency rate by code' })
   @ApiResponse({ status: 200, description: 'Currency updated successfully' })
   @ApiResponse({ status: 400, description: 'Bad Request:Validation error' })
