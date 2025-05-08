@@ -39,7 +39,7 @@ export class InvoiceController {
 
   @Get()
   @Roles(UserRoles.ADMIN,UserRoles.OBSERVER,UserRoles.OPERATOR)
-  @UseGuards(CheckRoleGuard)
+  @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @ApiOperation({summary: "Yangi invoice(faktura) olish"})
   @ApiResponse({ status: 200, description: 'Invoice muvaffaqiyatli korildi.' })
   @ApiResponse({ status: 404, description: 'Invoice topilmadi.' })
