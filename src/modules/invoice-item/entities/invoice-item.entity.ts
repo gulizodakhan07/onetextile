@@ -10,11 +10,11 @@ export class InvoiceItem {
 
   @ManyToOne(() => Invoice, (invoice) => invoice.invoiceItemsId, { onDelete: 'CASCADE',nullable: true })
   @JoinColumn({ name: 'invoiceId' })
-  invoiceId: Invoice;
+  invoice: Invoice;
 
   @ManyToOne(() => DyedYarn, {onDelete: 'CASCADE',cascade:true, eager: true })
   @JoinColumn({ name: 'dyedYarnId' })
-  dyedYarnId: DyedYarn;
+  dyedYarn: DyedYarn;
 
   @Column('float')
   quantity: number;

@@ -36,8 +36,8 @@ export class InvoiceItemService {
     const totalPrice = quantity * unitPrice;
   
     const invoiceItem = this.invoiceItemRepository.create({
-      dyedYarnId: dyedYarn,
-      invoiceId: invoice,
+      dyedYarn: dyedYarn,
+      invoice: invoice,
       quantity,
       unitPrice,
       totalPrice,

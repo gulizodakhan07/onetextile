@@ -28,6 +28,8 @@ import { CurrencyModule } from './modules/currency/currency.module';
 import { TelegramModule } from './modules/telegram-bot/telegram-bot.module';
 import { ReceivableModule } from './modules/receivable/receivable.module';
 import { Receivable } from './modules/receivable/entities/receivable.entity';
+import { ReportsModule } from './modules/reports/reports.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
 
 @Module({
   imports: [
@@ -64,7 +66,9 @@ import { Receivable } from './modules/receivable/entities/receivable.entity';
     ExchangeRateModule,
     CurrencyModule,
     TelegramModule,
-    ReceivableModule
+    ReceivableModule,
+    ReportsModule,
+    InventoryModule
     
 
     ],
