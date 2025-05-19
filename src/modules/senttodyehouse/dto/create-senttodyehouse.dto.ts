@@ -1,9 +1,13 @@
-import { IsDateString, IsEnum, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDateString, IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateSenttodyehouseDto {
     @IsNumber()
     @IsNotEmpty()
     quantity: number
+
+    @IsNumber()
+    @IsOptional()
+    count:  number
 
     @IsDateString()
     @IsNotEmpty()

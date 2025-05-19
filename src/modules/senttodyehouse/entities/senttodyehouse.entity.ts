@@ -10,6 +10,9 @@ export class Senttodyehouse {
     @Column({type:'int',name: 'quantity'})
     quantity: number
 
+    @Column({ type: 'int', name: 'count',nullable:true })
+    count: number;
+
     @Column({type: 'date',name: 'sentDate'})
     sentDate: Date
 

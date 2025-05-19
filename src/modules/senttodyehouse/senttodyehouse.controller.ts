@@ -20,7 +20,8 @@ export class SenttodyehouseController {
   @ApiBody({
     schema:{
       properties: {
-        quantity: {type: 'int',example: 150},
+        quantity: {type: 'int',example: 150,description: "boyoqxonadan necha kg ip chiqilgan"},
+        count: {type: 'int',example: 150,description:"xomashyo soni"},
         sentDate: {type: 'date',example:'2025-04-08'},
         status: {type: 'enum',enum: ['Yuborildi','Jarayonda','Qabul qilindi'],example: 'Yuborildi'},
         notes: {type: 'string',example: 'Birinchi partiya boyoq uchun yuborildi'},

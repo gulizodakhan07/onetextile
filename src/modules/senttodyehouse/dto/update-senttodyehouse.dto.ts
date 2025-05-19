@@ -5,6 +5,10 @@ export class UpdateSenttodyehouseDto  {
     @IsNumber()
     quantity: number
 
+    @IsNumber()
+    @IsOptional()
+    count:  number
+
     @IsOptional()
     @IsDateString()
     sentDate: Date
