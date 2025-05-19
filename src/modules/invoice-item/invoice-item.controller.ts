@@ -50,6 +50,21 @@ export class InvoiceItemController {
   @ApiBearerAuth() 
   @UseGuards(CheckAuthGuard,CheckRoleGuard)
   @Roles(UserRoles.ADMIN,UserRoles.OPERATOR)
+  @ApiOperation({ summary: 'Update invoice item' })
+  @ApiBody({
+    type: CreateInvoiceItemDto,
+    examples: {
+      example1: {
+        summary: 'Example InvoiceItem',
+        value: {
+          dyedYarnId: 1,
+          invoiceId: 1,
+          quantity: 110,
+          unitPrice: 26.5,
+        },
+      },
+    },
+  })
   update(@Param('id') id: string, @Body() updateInvoiceItemDto: UpdateInvoiceItemDto) {
     return this.invoiceItemService.update(+id, updateInvoiceItemDto);
   }
